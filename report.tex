@@ -215,16 +215,30 @@ The UI is pretty simple and straightforward. We have a Main Activity where you c
 \end{figure}
 
 \section{Requirements}
-Describe system setup, components, external libraries, hardware etc.
-
-
-\begin{figure}[h]
-	\centering
-    \includegraphics[width=\columnwidth]{overview.jpg}
-    \lfig{system-overview}
-    \vspace{-5mm} % use negative white space to fix too large gaps
-	\caption{System Overview~\cite{estimote}}
-\end{figure}
+Because of a potential use of Bluetooth Low Energy we require minimum sdk 18. We will be testing our project with Nexus 5, LG G3 and Nexus 6. In the case that the p2pkit integration is successful, we will furthermore require that the p2pkit (P2P Services by Ueppa AG) is also installed on the device and that bluetooth and wifi are enabled, not necessarily connected, while the app is in use. The server implementation requires an internet connection and also the location service of android should be turned on. 
+Libraries we will use:
+\begin{enumerate}
+	\item
+	Google App Engine~\cite{google_app_engine}
+	\item
+	Google Cloud Endpoints~\cite{google_cloud_endpoints}
+	\item
+	Google Cloud Endpoints Android API~\cite{google_cloud_endpoints_android}
+	\item
+	Google Cloud Messaging~\cite{google_cloud_messaging}
+	\item
+	Google Cloud Messaging Android API~\cite{google_cloud_messaging_android}
+	\item
+	Firebase~\cite{firebase}
+	\item
+	Firebase Android API~\cite{firebase_java}
+	\item
+	Firebase token generator~\cite{firebase_token_generator}
+	\item
+	p2pkit~\cite{p2pkit}
+	\item
+	potentially Android Wifi P2P~\cite{android_wifi_p2p}
+\end{enumerate}
 
 \section{Work Packages}
 Breakdown the work to subtasks to meet the project requirements.
