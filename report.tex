@@ -74,7 +74,7 @@
 
 % General information
 
-\title{SaveMyAss\\
+\title{Save My Ass\\
 \normalsize{Distributed Systems -- Project Proposal}}
 \subtitle{subtitle}
 
@@ -140,7 +140,7 @@ We are trying to tackle this problem by providing an application which is very e
 As good as this sounds, there are numerous challenges that arise, particularly concerning fast and reliable multicasts and consistency for proximity-based communication.
 
 First of all, there is the problem of reliability - in an emergency situation, you want to have your alert reaching other people by any means possible. We try to tackle this by using multiple different means of communication and detection:
-First, with a working internet connection, we will pursue a centralized approach. A firebase database~\cite{firebase} to store the locations of people and a server to evaluate the location informations and send push notifications via Google Cloud Messaging (GCM)~\cite{google_cloud_messaging} to notify people in the vicinity of the alert origin. Firebase is a scalable real-time database which was originally developed by an independant company and later got bought by Google~\cite{firebase}. We choose this approach for scalability reasons. See section 2.1 for more details. This provides a large search and alert range as well as a reliable way of communication.
+First, with a working internet connection, we will pursue a centralized approach. A firebase database~\cite{firebase} to store the locations of people and a server to evaluate the location informations and send push notifications via Google Cloud Messaging (GCM)~\cite{google_cloud_messaging} to notify people in the vicinity of the alert origin. Firebase is a scalable real-time database which was originally developed by an independant company and later got bought by Google. We choose this approach for scalability reasons. See section 2.1 for more details. This provides a large search and alert range as well as a reliable way of communication.
 
 Secondly, without a working internet connection, we take a P2P approach. There is p2pkit~\cite{p2pkit}, a framework developed by a spinoff of the ETH, Ueppa, which is developed exactly for proximity-detection, and works even without an internet connection. Though this is a nice approach, the current development status of this framework might not be sufficient enough for our requirements. We started a smaller series of tests with modest results, but we will evaluate our options here further. One consideration is to replace p2pkit with the Android Wifi-P2P framework~\cite{android_wifi_p2p} or use it as a supplement. In case we arrive at the decision that it is insufficient we will focus ourselves on the centralized approach and take P2P as a best effort offline approach. Consult Section 2.2. for more details.
 
@@ -165,7 +165,7 @@ As mentioned in section 1 the centralized approach uses a central server and a d
 
 Why don't we use something like Google Nearby? 
 With Google Nearby Messages one has a range restriction (approximately 30 meters)~\cite{nearby}. Since this is not enough for our purpose and we want to have flexible control of the range in which we want to alert people, we will build our own approach there. Therefore our system gets highly dynamic and would theoretically also work for any other kind of proximity based application.
-Why do we use firebase and GCM and not our own simple server with, for example, simple MySQL database? We want our overall service to be reliable and highly scalable. We want to build a system which could theoretically be used by thousands of people. With firebase we are safe on the database side, because they claim they can handle millions of concurrent connections. Also we do not need to worry about security issues, encryption etc. We could theoretically always have an open connection to the firebase database directly from each client. This would require much energy according to~\cite{stackoverflow}. Therefore we rely on the GCM service there and send push notifications from our Google App Engine~\cite{google_app_engine} server via GCM to the client. Also with Google App Engine we do not need to worry about security and scalability issues. There are neat APIs for Android~\cite{firebase_java} and a REST Interface for the Server~\cite{firebase_rest}.
+Why do we use firebase and GCM and not our own simple server with, for example, simple MySQL database? We want our overall service to be reliable and highly scalable. We want to build a system which could theoretically be used by thousands of people. With firebase we are safe on the database side, because they claim they can handle millions of concurrent connections. Also we do not need to worry about security issues, encryption etc. We could theoretically always have an open connection to the firebase database directly from each client. This would require much energy according to~\cite{stackoverflow}. Therefore we rely on the GCM service there and send push notifications from our Google App Engine~\cite{google_app_engine} server via GCM to the client. Also with Google App Engine we do not need to worry about security and scalability issues. There are neat APIs for Android~\cite{firebase_java, firebase_javascript} and a REST Interface for the Server~\cite{firebase_rest}.
 
 \subsection{Decentralized approach}
 
@@ -241,8 +241,6 @@ Libraries we will use:
 \end{enumerate}
 
 \section{Work Packages}
-Breakdown the work to subtasks to meet the project requirements.
-Define and describe these tasks.
 
 \newcommand{\wpitem}[2]{\item\textbf{#1}\\#2}
 \newcommand{\wpgroup}[2]{
