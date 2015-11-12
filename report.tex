@@ -181,15 +181,48 @@ Describe system setup, components, external libraries, hardware etc.
 Breakdown the work to subtasks to meet the project requirements.
 Define and describe these tasks.
 
-\begin{itemize}
-        \item {\bf WP1}:  XYZ  \ldots    
-        \item {\bf WP2}: Set and Configuring Backend Serve  \ldots    
-        \item {\bf WP3}: Integration  \ldots 
-         \item {\bf WPx}:  \ldots 
-\end{itemize}
- 
-Stick to a concise, scientific writing style. 
+\newcommand{\wpitem}[2]{\item\textbf{#1}\\#2}
+\newcommand{\wpgroup}[2]{
+    \item\textbf{#1}
+    \begin{enumerate}[label*=\arabic*.]
+        #2
+    \end{enumerate}
+}
+\begin{enumerate}[label*=\arabic*.]
+    \wpgroup{GUI \& Activities}{
+        \wpitem{implement basic GUI}{}
+        \wpitem{Structure the project}{provide interfaces for the different work packages}
+        \wpitem{(Optional) Alarm Feedback \& Helper Proximity}{Add a feature where the one needing help receives feedback about people on their way to him and their distance}
+    }
+    \wpgroup{P2P backend}{
+        \wpitem{P2P Test Phase, Basic Functionality}{
+            test if the p2pkit is applicable for our needs (in terms of speed and reliability).
+            If it is not, we will not pursue this option further
+        }
+        \wpitem{Discovery Logic}{implement discovering nearby people, keep track of peers in your vicinity}
+        \wpitem{Alarm \& Revocation Logic (Snowball effect, Broadcast)}{implement sending and revoking alarms to nearby people and reacting to these events}
+    }
+    \wpgroup{Centralized Backend - Client Side}{
+        \wpitem{Database Setup (Firebase)}{integrate a firebase db into our app, periodically update user location in the database}
+        \wpitem{GCM integration}{}
+        \wpitem{Server Interface}{Communication to the server and reacting to push notifications (send current location, start alarm)}
+        \wpitem{Alarm logic}{check if alarm is still valid and user is in a useful range, react to alarm if nobody else already did, handle reaction of user}
+        \wpitem{(Optional) Alarm Feedback \& Helper Proximity}{Add a feature where the one needing help receives feedback about people on their way to him and their distance}
+    }
+    \wpgroup{Centralized Backend - Server Side}{
+        \wpitem{Implement server and integrate firebase db}{}
+        \wpitem{GCM integration}{}
+        \wpitem{Alarm Logic}{react to user alarm events and find nearby people}
+        \wpitem{(Optional) Alarm Feedback \& Helper Proximity}{Add a feature where the one needing help receives feedback about people on their way to him and their distance}
+    }
+    \wpgroup{Miscellaneous}{
+        \wpitem{Alarm Activation Logic}{implement a listener which monitors button events for a special combination and then triggers the alarm}
+        \wpitem{always-on Android background process \& IPC}{figure out how to have the background code running in a separate process and how to communicate to it from the activities}
+        \wpitem{(Optional) consider ways on how we could reduce spam alerts}{}
+    }
 
+\end{enumerate}
+ 
 \section{Milestones}
 The milestones section provides a work plan for carrying out the project.
 This is your schedule for getting the project done.
