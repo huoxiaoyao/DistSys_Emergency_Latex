@@ -102,24 +102,24 @@
 	\email{\normalsize{vatrifon@student.ethz.ch}}
 % 2nd. author
 \alignauthor \normalsize{Simon Ringeisen}\\
-	\affaddr{\normalsize{ETH ID XX-XXX-XXX}}\\
+	\affaddr{\normalsize{ETH ID 13-934-930}}\\
 	\email{\normalsize{rsimon@student.ethz.ch}}
 % 3rd. author
 \alignauthor \normalsize{Jan Eberhardt}\\
-	\affaddr{\normalsize{ETH ID XX-XXX-XXX}}\\
+	\affaddr{\normalsize{ETH ID 13-925-417}}\\
 	\email{\normalsize{ebjan@student.ethz.ch}}
 \and
 % 4th. author
 \alignauthor \normalsize{Caroline Creidenberg}\\
-	\affaddr{\normalsize{ETH XX-XXX-XXX}}\\
+	\affaddr{\normalsize{ETH 15-907-421}}\\
 	\email{\normalsize{ccreiden@student.ethz.ch}}
 % 5th. author
 \alignauthor \normalsize{Fabian Ulb}\\
-	\affaddr{\normalsize{ETH ID XX-XXX-XXX}}\\
+	\affaddr{\normalsize{ETH ID 13-931-951}}\\
 	\email{\normalsize{fabianu@student.ethz.ch}}
 % 6th. author
 \alignauthor \normalsize{Felix Wolf}\\
-	\affaddr{\normalsize{ETH ID XX-XXX-XXX}}\\
+	\affaddr{\normalsize{ETH ID 13-927-983}}\\
 	\email{\normalsize{fewolf@student.ethz.ch}}
 }
 
@@ -129,7 +129,7 @@
 \maketitle
 
 \begin{abstract}
-In this document we are describing the initial planning of an app, which purpose it is to serve as a quick and easy way for people in an emergency situation to call for help to people within their vicinity. Our main goal is to provide a reliable service that informs people that are near an emergency as quick as possible.
+In this document we are describing the initial planning of an Android app, its purpose is to serve as a quick and easy way for people in an emergency situation to call for help to people within their vicinity. The goal of the app is that the people in the surrounding area will be able to receive the emergency alarm through peer-to-peer or a server based system and respond to the emergency faster than any official emergency system would be able to. 
 \end{abstract}
 
 \section{Introduction}
@@ -148,22 +148,71 @@ The combination of these approaches should hence provide reliability on the edge
 
 \section{System Overview}
 
-This is the core of the proposal.
-It is where you spell out your technical plan and explain the project design.
-Expected evaluation/demonstration issues would also be addressed in this section.
-Use helpful figures such as~\rfig{example} and~\rfig{system-overview},
-explain the figures in the text where you reference them. 
+It's important to remember that we have two app backends that essentially do the same thing. They can be thought of as two different channels to communicate. If one is not available, we will just try to use the other option and if both are available that is fine as well.
 
+\subsection{Centralized approach}
+
+As mentioned in section 1 the centralized approach uses a central server and a database. All clients, meaning all phones on whom our app is running, register by sending their ID to the App Engine Server~\cite{google_app_engine}. They get back a key, which they can use to write to the database and write their location into. This location doesn't need to be accurate, it just needs to be a rough approximation. Also this location must be updated from time to time, this could be every hour, twice a day or even only daily. This allows us to store a rough location estimation of all the clients. Now if one client needs help, he sends an alarm request to the server. This request also contains his/her exact current location. The server then goes through the database and finds clients that are somewhat in the near. This could be 10 km or 100 km or even more depending on the update interval of the locations. Then the server sends a push notification via Google Cloud Messaging (GCM) to the clients which are in this larger range. See~\cite{firebase_app_engine_tutorial} for Firebase with Google App Engine and~\cite{gcm_template} for GCM push notifications. Then the clients can decide whether the request is not too old (as GCM's may be delayed when the client was offline) and if the user who needs help is within a useful range. It then connects to the firebase and looks to see if someone who is closer to the person who needs help has already taken action. If not, the app starts an alarm. As soon as the user decides to help, the app starts putting his/her current location into the server. Like this, the other users can see, whether someone has already taken action or not. The alarm can be revoked by inserting a corresponding message into the firebase. 
+\newline
 
 \begin{figure}[h]
 	\centering
-    \includegraphics[width=\columnwidth]{example}
-    \lfig{example}
+    \includegraphics[width=\columnwidth]{server1.pdf}
+    \lfig{server-structure}
     \vspace{-5mm} % use negative white space to fix too large gaps
-	\caption{Only include useful figures. Do not simply copy something from a Web.}
+	\caption{Server Structure}
 \end{figure}
 
+Why don't we use something like Google Nearby? 
+With Google Nearby Messages one has a range restriction (approximately 30 meters)~\cite{nearby}. Since this is not enough for our purpose and we want to have flexible control of the range in which we want to alert people, we will build our own approach there. Therefore our system gets highly dynamic and would theoretically also work for any other kind of proximity based application.
+Why do we use firebase and GCM and not our own simple server with, for example, simple MySQL database? We want our overall service to be reliable and highly scalable. We want to build a system which could theoretically be used by thousands of people. With firebase we are safe on the database side, because they claim they can handle millions of concurrent connections. Also we do not need to worry about security issues, encryption etc. We could theoretically always have an open connection to the firebase database directly from each client. This would require much energy according to~\cite{stackoverflow}. Therefore we rely on the GCM service there and send push notifications from our Google App Engine~\cite{google_app_engine} server via GCM to the client. Also with Google App Engine we do not need to worry about security and scalability issues. There are neat APIs for Android~\cite{firebase_java} and a REST Interface for the Server~\cite{firebase_rest}.
 
+\subsection{Decentralized approach}
+
+The Decentralized approach is currently based on the p2pkit. It can be divided in two parts, an active and a passive mode. In the passive mode each device has to keep track of the available peers in its vicinity. This gets implemented with a List, where discovered peers are inserted and lost peers are removed. Depending on which P2P technology we utilize, it could be that we can only deal with approximate times of actual existing peers.
+
+\begin{figure}[h]
+	\centering
+    \includegraphics[width=\columnwidth]{peerControll.pdf}
+    \lfig{peer-logic}
+    \vspace{-5mm} % use negative white space to fix too large gaps
+	\caption{Peer Logic}
+\end{figure}
+
+The App switches to active mode if an alarm is received or sent. If an alarm was sent, then the List of available peers is used to send them alarm messages. After an alarm was sent the user is given the possibility to revoke the alarm. The messages contain a source ID (UUID) and some information about the source location. If an alarm is received, the source id is stored until the alarm gets revoked. As long as the device has a connection to the device from which it got the source ID, it sends alarm messages to its available peers. To limit the number of resends, the devices keep track of the length of the path from the actual source to the device and if a certain threshold is reached it won't send any further messages. If a revocation with the source ID is received, it sends revocation messages to all its peers and goes back to passive mode. If the connection to the device from which it got the source ID is lost, it also won't send further alarm messages. If the connection with an involved device can be obtained, the device has to inquire if the alarm was not revoked, else the device will go back to passive mode after a certain timeout. In all states the user gets the possibility to return to passive mode.
+
+\begin{figure}[h]
+	\centering
+    \includegraphics[width=\columnwidth]{P2P.pdf}
+    \lfig{peer-connection}
+    \vspace{-5mm} % use negative white space to fix too large gaps
+	\caption{Peer Connection}
+\end{figure}
+
+Here the main challenge is to achieve consistency and fast communication between all devices with a reasonable battery usage. A first series of tests has shown certain issues in this domain, especially concerning the consistency.
+
+\subsection{App Overview}
+The picture below is a general overview of the system from an Android perspective and how we plan to implement the two separate channels.
+
+\begin{figure}[h]
+	\centering
+    \includegraphics[width=\columnwidth]{AppOverview.pdf}
+    \lfig{app-overview}
+    \vspace{-5mm} % use negative white space to fix too large gaps
+	\caption{App Overview}
+\end{figure}
+
+\subsection{UI}
+
+The UI is pretty simple and straightforward. We have a Main Activity where you can start the alarm, turn the service as a whole either on or off (this means you won't receive alarms if it's off and you also will not be able to start an alarm) and a button to open the settings. The following  settings will be offered: the user can decide which button combination can trigger the alarm, turn off the online version and work with the p2p version only (this will only be implemented if the p2p communication will be sufficient) and enter a custom message which will be displayed to persons that get the alarm. If the user triggered the alarm he gets to a screen where he can abort or revoke said alarm and see the status of surrounding people, people on the way etc. (this is an optional feature). If somebody receives an alarm, there will be a standard android notification and by clicking on it, the user will get to a screen where he/she sees a map with his/her position and the location and message of the person in need. He/she is then able to either accept or dismiss the alarm depending on their ability to help or not.
+
+\begin{figure}[h]
+	\centering
+    \includegraphics[width=\columnwidth]{Notruf.pdf}
+    \lfig{app-ui}
+    \vspace{-5mm} % use negative white space to fix too large gaps
+	\caption{User Interface}
+\end{figure}
 
 \section{Requirements}
 Describe system setup, components, external libraries, hardware etc.
