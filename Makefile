@@ -1,18 +1,24 @@
-SRC = report.tex
-TARGET = $(SRC:.tex=.pdf)
+SRC = report
+TARGET = $(SRC).pdf
 
-all: 	subj
+all: 	report
 
-subj:
-	pdflatex $(SRC)
+report: refs
+	pdflatex $(SRC).tex
 
-view: 	subj
+refs:	report-no-refs
+	bibtex report
+
+report-no-refs:
+	pdflatex $(SRC).tex
+
+view: 	report
 	nohup okular $(TARGET) &>/dev/null &
 	rm -f nohup.out
 
 edit:
-	gvim $(SRC)
+	gvim $(SRC).tex
 
 .PHONY: clean
 clean:
-	rm -rf *.log *.aux *.toc *.pdf
+	rm -rf *.log *.aux *.toc 'Makefile~' 'nohup.out' *.bbl *.blg

@@ -81,7 +81,7 @@
 % Use the \alignauthor commands to handle the names
 % and affiliations for an 'aesthetic maximum' of six authors.
 
-\numberofauthors{1} %  in this sample file, there are a *total*
+\numberofauthors{6} %  in this sample file, there are a *total*
 % of EIGHT authors. SIX appear on the 'first-page' (for formatting
 % reasons) and the remaining two appear in the \additionalauthors section.
 %
@@ -97,9 +97,30 @@
 % e-mail address with \email.
 %
 % 1st. author
-\alignauthor \normalsize{Student One,  Student Two, Student Three}\\
-	\affaddr{\normalsize{ETH ID-1 XX-XXX-XXX, ETH ID-2 XX-XXX-XXX, ETH ID-3 XX-XXX-XXX}}\\
-	\email{\normalsize{one@student.ethz.ch, two@student.ethz.ch, three@student.ethz.ch}}
+\alignauthor \normalsize{Valentin Trifonov}\\
+	\affaddr{\normalsize{ETH ID 13-941-679}}\\
+	\email{\normalsize{vatrifon@student.ethz.ch}}
+% 2nd. author
+\alignauthor \normalsize{Simon Ringeisen}\\
+	\affaddr{\normalsize{ETH ID XX-XXX-XXX}}\\
+	\email{\normalsize{rsimon@student.ethz.ch}}
+% 3rd. author
+\alignauthor \normalsize{Jan Eberhardt}\\
+	\affaddr{\normalsize{ETH ID XX-XXX-XXX}}\\
+	\email{\normalsize{ebjan@student.ethz.ch}}
+\and
+% 4th. author
+\alignauthor \normalsize{Caroline Creidenberg}\\
+	\affaddr{\normalsize{ETH XX-XXX-XXX}}\\
+	\email{\normalsize{ccreiden@student.ethz.ch}}
+% 5th. author
+\alignauthor \normalsize{Fabian Ulb}\\
+	\affaddr{\normalsize{ETH ID XX-XXX-XXX}}\\
+	\email{\normalsize{fabianu@student.ethz.ch}}
+% 6th. author
+\alignauthor \normalsize{Felix Wolf}\\
+	\affaddr{\normalsize{ETH ID XX-XXX-XXX}}\\
+	\email{\normalsize{fewolf@student.ethz.ch}}
 }
 
 
@@ -108,31 +129,22 @@
 \maketitle
 
 \begin{abstract}
-This proposal should conclude the initial planning phase. This is where you choose a project, set your goals,
-clarify your ideas, and find the materials you will need. 
-Concisely state 
-\textit{(a)}~System overview
-\textit{(b)}~software and hardware you intend to use in this project,
-\textit{(c)}~expected deliveries of this project.
+In this document we are describing the initial planning of an app, which purpose it is to serve as a quick and easy way for people in an emergency situation to call for help to people within their vicinity. Our main goal is to provide a reliable service that informs people that are near an emergency as quick as possible.
 \end{abstract}
 
 \section{Introduction}
 
-Introduction to the problem you are working on, why is it important and
-what makes it challenging to solve, spell out the distributed systems challenges and how you plan to tackle them. 
-State the technical problem you intend to solve. Indicate how it might be useful. This can be brief; it is just
-an introduction to the next section.
+Traditional emergency solutions tend to have one issue making them unsuitable for many modern emergency situations, that is the need for a longer conversation about the problem with an officer and the long response latency. In some situations, much faster help is needed.
+We try to tackle this problem by providing an application which is very easy and fast to start, issuing an alert to people nearby informing them of the emergency as well as the location, and therefore enabling people helping people where needed, even in situations where an internet connection might not be available.
 
-Use this section as well for background information, particularly if your project is building on
-previous work. If it is doing that, you need to refer to the work, describe it,
-and say how you are extending it. What are the new ideas?
+As good as this sounds, there are a number of challenges to solve for this, particularly concerning fast and reliable multicasts and consistency for proximity-based communication.
 
-Use references such as books~\cite{hello}, papers~\cite{REST}, or specifications~\cite{RFC2616} whenever available.
-Web-sites for documentation~\cite{devServices}, tutorials, etc., are a special case.
-In a thesis, you would put them as footnotes.
-At this stage, however, you will only have a few ``real references'',
-so we put the Web-sites into the bibliography.
-Cite every source you used throughout the project.
+First of all, there is the problem of reliability - in an emergency situation, you want to have your alert reaching other people by any means possible. We try to tackle this by using multiple different means of communication and detection:
+First of all, with a working internet connection, we will pursue a centralized approach, a firebase database to store the locations of people and a server to evaluate the location informations and send push notifications via Google Cloud Messaging (GCM) to notify people in the vicinity of the alert origin. Firebase is a scalable real-time database which was originally developed by an independant company and later got bought by google~\cite{firebase}. We choose this approach for scalability reasons. See section 2.1 for more details. This provides a large range as well as a reliable way of communication.
+
+Secondly, without a working internet connection, we take a P2P approach. There is p2pkit~\cite{p2pkit}, a framework developed by a spinoff of the ETH, Ueppa, which is developed exactly for proximity-detection, and works even without an internet connection. Though this is a nice approach, the current development status of this framework might not be sufficient for our requirements. We started a first series of tests with modest results but we will evaluate our options here further. One consideration is to replace p2pkit with the Android Wifi-P2P framework~\cite{android_wifi_p2p} or use it as a supplement. In case we arrive at the decision that it is insufficient we will focus ourselves on the centralized approach and take P2P as a best effort offline approach. Consult Section 2.2. for more details.
+
+The combination of these approaches should hence provide reliability on the edge what’s possible with currently available technology.
 
 \section{System Overview}
 
