@@ -1,0 +1,89 @@
+\begin{thebibliography}{10}
+
+\bibitem{android_wifi_p2p}
+{Android Wifi Peer-to-Peer}.
+\newblock
+  \url{http://developer.android.com/guide/topics/connectivity/wifip2p.html}.
+\newblock Accessed on 12 Nov 2015.
+
+\bibitem{gcm_template}
+{"App Engine Backend with Google Cloud Messaging" Template}.
+\newblock
+  \url{https://github.com/GoogleCloudPlatform/gradle-appengine-templates/tree/master/GcmEndpoints}.
+\newblock Accessed on 12 Nov 2015.
+
+\bibitem{firebase}
+{Firebase}.
+\newblock \url{https://www.firebase.com/}.
+\newblock Accessed on 12 Nov 2015.
+
+\bibitem{firebase_app_engine_tutorial}
+{Firebase App Engine Tutorial}.
+\newblock
+  \url{https://www.firebase.com/blog/2015-10-01-firebase-android-app-engine-tutorial.html}.
+\newblock Accessed on 12 Nov 2015.
+
+\bibitem{firebase_java}
+{Firebase Java API}.
+\newblock \url{https://www.firebase.com/docs/android/api/}.
+\newblock Accessed on 12 Nov 2015.
+
+\bibitem{firebase_javascript}
+{Firebase Javascript API}.
+\newblock \url{https://www.firebase.com/docs/web/api/}.
+\newblock Accessed on 12 Nov 2015.
+
+\bibitem{firebase_rest}
+{Firebase REST API}.
+\newblock \url{https://www.firebase.com/docs/rest/}.
+\newblock Accessed on 12 Nov 2015.
+
+\bibitem{firebase_token_generator}
+{Firebase Token Generator}.
+\newblock \url{https://github.com/firebase/firebase-token-generator-python}.
+\newblock Accessed on 12 Nov 2015.
+
+\bibitem{google_app_engine}
+{Google App Engine}.
+\newblock \url{https://cloud.google.com/appengine/docs}.
+\newblock Accessed on 12 Nov 2015.
+
+\bibitem{google_cloud_endpoints}
+{Google Cloud Endpoints}.
+\newblock \url{https://cloud.google.com/appengine/docs/python/endpoints/}.
+\newblock Accessed on 12 Nov 2015.
+
+\bibitem{google_cloud_endpoints_android}
+{Google Cloud Endpoints Android API}.
+\newblock
+  \url{https://cloud.google.com/appengine/docs/java/endpoints/consume_android}.
+\newblock Accessed on 12 Nov 2015.
+
+\bibitem{google_cloud_messaging}
+{Google Cloud Messaging}.
+\newblock \url{https://developers.google.com/cloud-messaging/downstream}.
+\newblock Accessed on 12 Nov 2015.
+
+\bibitem{google_cloud_messaging_android}
+{Google Cloud Messaging Android API}.
+\newblock
+  \url{https://cloud.google.com/tools/android-studio/messaging/add_module}.
+\newblock Accessed on 12 Nov 2015.
+
+\bibitem{nearby}
+{Google Nearby Messages}.
+\newblock \url{https://developers.google.com/nearby/}, see youtube video at
+  start page.
+\newblock Accessed on 12 Nov 2015.
+
+\bibitem{p2pkit}
+{p2pkit by Uepaa}.
+\newblock \url{http://p2pkit.io/}.
+\newblock Accessed on 12 Nov 2015.
+
+\bibitem{stackoverflow}
+{Stack overflow}.
+\newblock \url{http://stackoverflow.com/a/27325402}.
+\newblock Accessed on 12 Nov 2015.
+
+\end{thebibliography}

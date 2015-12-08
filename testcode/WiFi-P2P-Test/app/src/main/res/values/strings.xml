@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">WiFi-P2P-Test</string>
+    <string name="init_discovery"> Initialise Discovery</string>
+</resources>
