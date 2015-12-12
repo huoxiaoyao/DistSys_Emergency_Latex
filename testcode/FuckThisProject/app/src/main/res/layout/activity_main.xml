@@ -1,0 +1,55 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
+
+    <ToggleButton
+        android:id="@+id/hostServiceButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOn="stop service"
+        android:textOff="start service"/>
+
+    <Button
+        android:id="@+id/startDiscoverButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="start disc"/>
+
+    <Button
+        android:id="@+id/stopDiscoverButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text = "stop disc"/>
+
+    <ToggleButton
+        android:id="@+id/extraPeerDiscoverButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOn="stop peer"
+        android:textOff="start peer"/>
+
+    <ToggleButton
+        android:id="@+id/mappingTextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOn="Ausloser"
+        android:textOff="Empfanger"/>
+
+    <Button
+        android:id="@+id/clearButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text = "clear List"/>
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </ListView>
+
+</LinearLayout>
